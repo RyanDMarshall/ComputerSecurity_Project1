@@ -13,22 +13,15 @@ url2 = url[idx2:len(url)]
 x = "&command3=UnlockAllSafes"
 url2 = url2 + x
 
-print urllib.quote(token).decode("hex")
+l_of_m = 8 + len(url2)
+bits = (l_of_m + len(padding(l_of_m*8)))*8
 
-h = md5(state=urllib.quote(token).strip().decode("hex"), count=512)
+h = md5(state=urllib.quote(token.strip().decode("hex")), count=bits)
 
-print "HD=", md5(url).hexdigest()
 h.update(x)
 new_token = h.hexdigest()
-print "NT=", new_token
 
 new_url = url1 + new_token + url2
-print "NU1=", new_url
-
-#print url
-#print new_url
-
-print md5(url2).hexdigest()
 
 parsedUrl = urlparse.urlparse(new_url)
 conn = httplib.HTTPSConnection(parsedUrl.hostname,parsedUrl.port)
