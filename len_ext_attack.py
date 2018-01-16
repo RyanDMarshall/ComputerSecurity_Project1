@@ -15,12 +15,11 @@ url2 = url[idx2:len(url)]
 x = "&command3=UnlockAllSafes"
 url2 = url2 + x
 
-print url1
-print token
-print url2, len(url2)
-
 l_of_m = 8 + len(url2)
 bits = (l_of_m + len(padding(l_of_m*8)))*8
+
+print padding(bits)
+return;
 
 h = md5(state=token.decode("hex"), count=bits)
 
