@@ -26,7 +26,7 @@ h.update(urllib.quote(padding((l_of_m + len(x)) * 8) + x))
 
 new_token = h.hexdigest()
 
-new_url = url1 + new_token + "&" + url2 + x
+new_url = url1 + new_token + "&" + url2 + urllib.quote(padding((l_of_m + len(x)) * 8)) + x
 
 print "\nNEW=", new_url
 
