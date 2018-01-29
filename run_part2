@@ -1,5 +1,5 @@
 ./fastcoll -p prefix -o col1 col2
-cat col1 suffix > file1.py
-cat col2 suffix > file2.py
-openssl dgst -md5 file1.py file2.py
-openssl dgst -sha256 file1.py file2.py
+cat col1 suffix > good.py
+cat col2 suffix > evil.py
+openssl dgst -md5 good.py evil.py
+openssl dgst -sha256 good.py evil.py
