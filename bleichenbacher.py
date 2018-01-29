@@ -1,28 +1,42 @@
 from roots import *
 import hashlib
 import sys
+# Gets message from command line of the form "from_account+to_account_amount"
+# e.g. "eecs183+ryanmars+1.23"
+# Verify that command line input is of this form and that this is the "message"
 message = sys.argv[1]
 
+# Splits message into three strings appropriately
 from_acc, to_acc, amt = message.split('+')
 
+# Beginning of signature, as given in spec (Check this)
 sig_begin = "0001FF003031300d060960864801650304020105000420"
 
+# Middle of signature (Sha-256 digest of message)
 m = hashlib.sha256()
 m.update(message)
 sig_mid = m.hexdigest()
 
+print sig_mid
+
+# Signature-leftover bits
 sig = sig_begin + sig_mid
-#202 bytes remaining on the right side
+
 sig_bytes = len(sig)*8
-leftover = 202
+leftover = 201 # = 2048/8 - 55 (Missing bytes from FF)
 
-for i in range(0, leftover):
-	(num, perf) = integer_nthroot(sig_bytes+i,3)
-	if perf:
-		break
+# Finds the smallest value from 0 to leftover at which the message has a perfect
+# cube number of bits
+#for i in range(0, leftover):
+#	(num, perf) = integer_nthroot(sig_bytes+i,3)
+#	if perf:
+#		break
 
+# This does not work right
 sig += integer_to_base64(leftover)
+sig_bytes = len(sig)*8
 print sig
+print sig_bytes
 
 # Key obtained from https://
 key = ("-----BEGIN PUBLIC KEY-----"
