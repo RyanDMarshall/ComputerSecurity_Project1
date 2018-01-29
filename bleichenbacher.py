@@ -17,7 +17,7 @@ m = hashlib.sha256()
 m.update(message)
 sig_mid = m.hexdigest()
 
-print sig_mid
+print "Hash = ", sig_mid, "\n\n\n"
 
 # Signature-leftover bits
 sig = sig_begin + sig_mid
@@ -25,18 +25,23 @@ sig = sig_begin + sig_mid
 sig_bytes = len(sig)*8
 leftover = 201 # = 2048/8 - 55 (Missing bytes from FF)
 
+sig += '0'*leftover#integer_to_base64(leftover)
+sig_bytes = len(sig)*8
+
+sig_num = bytes_to_integer(sig.encode())
+(sig_cube_root, is_cube) = integer_nthroot(sig_num,3)
+sig_final_1 = integer_to_bytes(sig_cube_root**3)
+sig_final_2 = integer_to_bytes((sig_cube_root+1)**3)
+
+print sig_final_1, "\n\n\n"
+print sig_final_2
+
 # Finds the smallest value from 0 to leftover at which the message has a perfect
-# cube number of bits
+# cube number of bits (Look at Piazza post #383: How do we incorporate this?)
 #for i in range(0, leftover):
 #	(num, perf) = integer_nthroot(sig_bytes+i,3)
 #	if perf:
 #		break
-
-# This does not work right
-sig += integer_to_base64(leftover)
-sig_bytes = len(sig)*8
-print sig
-print sig_bytes
 
 # Key obtained from https://
 key = ("-----BEGIN PUBLIC KEY-----"
