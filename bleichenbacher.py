@@ -25,14 +25,18 @@ sig = sig_begin + sig_mid
 sig_bytes = len(sig)*8
 leftover = 201 # = 2048/8 - 55 (Missing bytes from FF)
 
-sig += '0'*leftover#integer_to_base64(leftover)
+sig += '0'*leftover #integer_to_base64(leftover)
 sig_bytes = len(sig)*8
 
 sig_num = bytes_to_integer(sig.encode())
 (sig_cube_root, is_cube) = integer_nthroot(sig_num,3)
+
+sig_final_0 = integer_to_bytes((sig_cube_root-1)**3)
 sig_final_1 = integer_to_bytes(sig_cube_root**3)
 sig_final_2 = integer_to_bytes((sig_cube_root+1)**3)
 
+# For some reason this doesn't print
+#print sig_final_0, "\n\n\n"
 print sig_final_1, "\n\n\n"
 print sig_final_2
 
